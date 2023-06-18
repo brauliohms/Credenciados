@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+Credenciados FUNSA GSAU-YS
+{% endblock %}
+
+{% block content %}
+<div class="container-fluid bg-light">
+
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-2"></div>
+            <div class="col-8">
+                <p>{% include 'mensagens.html' %}</p>
+            <div class="card mt-5 shadow">
+                <h5 class="card-header">Adicionar Novo Credenciado</h5>
+                    <div class="card-body">
+
+                        <form action="{% url 'add_credenciado' %}" method="POST">
+                            {% csrf_token %}
+                            {% for field in form %}
+                                <div class="row mb-3 px-3">
+                                  <label for="{{ field.id_for_label }}" class="col-sm-2 col-form-label">{{ field.label }}</label>
+                                    <div class="col-sm-10">
+                                        {{ field }}
+                                    </div>
+                                </div>
+                            {% endfor %}
+
+                            <div class="row">
+                                <div class="col text-start">
+                                    <button type="button" id="id_voltar" class="btn btn-secondary" onclick="voltar()"><i class="fas fa-chevron-left"></i> Voltar</button>
+                                </div>
+                                <div class="col text-end">
+                                    <button type="submit" id="id_salvar" name="salvar" class="btn btn-success"><i class="fas fa-check"></i> Cadastrar</button>
+                                </div>
+                            </div>
+                        </form>
+
+                    </div>
+            </div>
+            </div>
+            <div class="col-2"></div>
+        </div>
+    </div>
+</div>
+<script src="{% static 'js/formatador.js' %}" charset="utf-8"></script>
+<script src="{% static 'js/utils.js' %}" charset="utf-8"></script>
+{% endblock %}
