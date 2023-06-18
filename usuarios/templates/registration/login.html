@@ -1,0 +1,88 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="container-fluid">
+
+    <div class="container">
+        <div class="row justify-content-center">
+            <p>{% if form.errors %}
+                <div class="col-3"></div>
+                <div class="col-6">
+                <div class="alert alert-danger alert-dismissible fade show container-fluid" role="alert">
+                    <div class="row align-items-center">
+                        <div class="col-11 text-start">
+                            Usuário ou senha incorretos. Tente novamente.
+                        </div>
+                        <div class="col-1 text-end">
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    </div>
+                </div>
+                </div>
+                <div class="col-3"></div>
+          {% endif %}</p>
+
+          {% if next %}
+            {% if user.is_authenticated %}
+              <p>
+                <div class="col-3"></div>
+                <div class="col-6">
+                <div class="alert alert-warning alert-dismissible fade show container-fluid" role="alert">
+                    <div class="row align-items-center">
+                        <div class="col-11 text-start">
+                            Seu usuário não tem acesso a esta página. Para continuar,
+                            entre em contato com o administradro do sistema para obter o acesso.
+                        </div>
+                        <div class="col-1 text-end">
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    </div>
+                </div>
+                </div>
+                <div class="col-3"></div>
+              </p>
+            {% else %}
+              <p>
+                <div class="col-3"></div>
+                <div class="col-6">
+                <div class="alert alert-warning alert-dismissible fade show container-fluid" role="alert">
+                    <div class="row align-items-center">
+                        <div class="col-11 text-start">
+                            Acesso restrito, página necessita de login.
+                        </div>
+                        <div class="col-1 text-end">
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    </div>
+                </div>
+                </div>
+                <div class="col-3"></div>
+              </p>
+            {% endif %}
+          {% endif %}
+
+            <div class="card mt-3 shadow-sm" style="width: 18rem;">
+              <h5 class="card-header">Login</h5>
+              <div class="card-body">
+
+                  <form method="POST" action="{% url 'login' %}">
+                    {% csrf_token %}
+                    <p>{{ form.username.label_tag }}<br/>
+                        {{ form.username }}</p>
+                    <p>{{ form.password.label_tag }}<br/>
+                        {{ form.password }}</p>
+                    <input type="submit" class="btn btn-primary" value="Entrar" />
+                    <input type="hidden" name="next" value="{{ next }}" />
+                  </form>
+
+                  <p><a href="{% url 'password_reset' %}">Esqueceu a senha?</a></p>
+
+              </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
