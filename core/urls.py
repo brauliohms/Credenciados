@@ -1,22 +1,22 @@
-"""
-URL configuration for core project.
-
-The `urlpatterns` list routes URLs to views. For more information please see:
-    https://docs.djangoproject.com/en/4.2/topics/http/urls/
-Examples:
-Function views
-    1. Add an import:  from my_app import views
-    2. Add a URL to urlpatterns:  path('', views.home, name='home')
-Class-based views
-    1. Add an import:  from other_app.views import Home
-    2. Add a URL to urlpatterns:  path('', Home.as_view(), name='home')
-Including another URLconf
-    1. Import the include() function: from django.urls import include, path
-    2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
-"""
+from credenciados import views
 from django.contrib import admin
-from django.urls import path
+from django.urls import include, path
+from usuarios.views import edit_usuario, sair
 
 urlpatterns = [
     path("admin/", admin.site.urls),
+    path("accounts/profile/", edit_usuario, name="edit_usuario"),
+    path("accounts/sair/", sair, name="sair"),
+    path("", views.index, name="index"),
+    path("credenciado/add/", views.add_credenciado, name="add_credenciado"),
+    path("credenciado/<int:pk>/", views.edit_credenciado, name="edit_credenciado"),
+    path("credenciado/<int:pk>/excluir/", views.del_credenciado, name="del_credenciado"),
+    path("credenciado/buscar_por_nomes", views.buscar_nomes, name="buscar_nomes"),
+    path("credenciado/buscar_por_servicos", views.buscar_servicos, name="buscar_servicos"),
+    path("credenciado/informacoes/", views.pdf_credenciado, name="pdf_credenciado"),
+]
+
+# Add Django site authentication urls (for login, logout, password management)
+urlpatterns += [
+    path("accounts/", include("django.contrib.auth.urls")),
 ]
