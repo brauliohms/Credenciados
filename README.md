@@ -5,7 +5,7 @@ _Sistema para cadastro dos credenciados do FUNSA-GSAU-YS_
 ## Instalação
 
 - Instale o **python** versão 3.x, e o **Virtualenv**
-- Clone esse repositório: `git clone credenciados.git`
+- Clone esse repositório: `git clone https://github.com/brauliohms/Credenciados.git`
 - Vá até o repositório: `cd Credenciados`
 - Crie um ambiente virtual: `python3 -m venv venv` (Debian)
 `python -m venv venv` (Windows)
