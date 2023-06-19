@@ -87,7 +87,7 @@ local_settings.py
 
 ### Django - Deploy ###
 media/
-static/
+/static/
 .env
 db.sqlite3
 
