@@ -6,11 +6,12 @@ Credenciados FUNSA GSAU-YS
 {% endblock %}
 
 {% block content %}
-<div class="container-fluid bg-light">
+<div class="container-fluid">
 
     <div class="container text-center">
         <p>{% include 'mensagens.html' %}</p>
 
+        {% if credenciados %}
         <p><h4>Resultado por <strong>"{{ query }}"</strong> em Nome dos credenciados <span class="btn btn-secondary btn-sm" onclick="voltar()"><i class="fas fa-chevron-left"></i> Voltar</span></h4></p>
 
         <table class="table table-striped table-hover mt-2 border shadow">
@@ -31,8 +32,7 @@ Credenciados FUNSA GSAU-YS
                             <td class="align-middle">{{ credenciado.cidade }}</td>
 
                             <!-- Botão IMPRIMIR -->
-                            <td class="align-middle"><button type="button" class="btn btn-warning">
-                                      <i class="fas fa-print"></i></button></td>
+                            <td class="align-middle"><a href="{% url 'pdf_credenciado' credenciado.id %}" target="_blank" rel="noopener noreferrer" class="btn btn-warning"><i class="fas fa-print"></i></a></td>
 
                             <!-- Botão Modal DETALHES -->
                             <td class="align-middle"><button type="button" data-bs-toggle="modal" data-bs-target="#staticBackdrop-{{ credenciado.id }}" class="btn btn-primary">
@@ -61,7 +61,7 @@ Credenciados FUNSA GSAU-YS
                                     {% if user.is_authenticated %}
                                       <a href="{% url 'edit_credenciado' credenciado.id %}" type="button" class="btn btn-info"><i class="fas fa-notes-medical"></i> Editar Credenciado</a>
                                     {% endif %}
-                                    <button type="button" class="btn btn-warning"><i class="fas fa-print"></i></button>
+                                    <a href="{% url 'pdf_credenciado' credenciado.id %}" target="_blank" rel="noopener noreferrer" class="btn btn-warning"><i class="fas fa-print"></i></a>
                                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
                                   </div>
                                 </div>
@@ -72,6 +72,9 @@ Credenciados FUNSA GSAU-YS
                     {% endfor %}
               </tbody>
         </table>
+        {% else %}
+            <p><h4>Resultado por <strong>"{{ query }}"</strong> em Nome dos credenciados, não encontrou resultado <span class="btn btn-secondary btn-sm" onclick="voltar()"><i class="fas fa-chevron-left"></i> Voltar</span></h4></p>
+        {% endif %}
     </div>
 </div>
 <script src="{% static 'js/utils.js' %}" charset="utf-8"></script>
