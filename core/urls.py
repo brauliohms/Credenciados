@@ -11,9 +11,9 @@ urlpatterns = [
     path("credenciado/add/", views.add_credenciado, name="add_credenciado"),
     path("credenciado/<int:pk>/", views.edit_credenciado, name="edit_credenciado"),
     path("credenciado/<int:pk>/excluir/", views.del_credenciado, name="del_credenciado"),
+    path("credenciado/<int:pk>/informacoes/", views.pdf_credenciado, name="pdf_credenciado"),
     path("credenciado/buscar_por_nomes", views.buscar_nomes, name="buscar_nomes"),
     path("credenciado/buscar_por_servicos", views.buscar_servicos, name="buscar_servicos"),
-    path("credenciado/informacoes/", views.pdf_credenciado, name="pdf_credenciado"),
 ]
 
 # Add Django site authentication urls (for login, logout, password management)

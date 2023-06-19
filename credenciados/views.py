@@ -1,6 +1,8 @@
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, redirect, render
+from fpdf import FPDF
 
 from .forms import FormCredenciado
 from .models import Credenciado
@@ -14,7 +16,7 @@ def index(request):
 
 def buscar_nomes(request):
     query = request.GET.get("q")
-    credenciados = Credenciado.objects.filter(nome__icontains=query)
+    credenciados = Credenciado.objects.filter(nome__icontains=query).order_by("nome")
     return render(
         request, "credenciados/busca_nomes.html", {"credenciados": credenciados, "query": query}
     )
@@ -22,14 +24,51 @@ def buscar_nomes(request):
 
 def buscar_servicos(request):
     query = request.GET.get("q")
-    credenciados = Credenciado.objects.filter(servicos__icontains=query)
+    credenciados = Credenciado.objects.filter(servicos__icontains=query).order_by("nome")
     return render(
         request, "credenciados/busca_servicos.html", {"credenciados": credenciados, "query": query}
     )
 
 
 def pdf_credenciado(request, pk):
-    pass
+    credenciado = get_object_or_404(Credenciado, pk=pk)
+    pdf = FPDF()
+    pdf.add_page()
+    pdf.set_font("helvetica", "B", 18)
+    pdf.cell(80)
+    pdf.cell(30, 10, "INFORMAÇÕES DO CREDENCIADO", align="C")
+    pdf.set_line_width(0.5)
+    pdf.line(x1=30, y1=20, x2=180, y2=20)
+    pdf.ln(20)
+    pdf.set_font("helvetica", size=14)
+    pdf.write_html(
+        f"""
+            <h1><center>{credenciado.nome}</center></h1>
+            <ul>
+            <li><b>CNPJ:</b> {credenciado.cnpj}</li>
+            <li><b>E-mail:</b> {credenciado.email}</li>
+            <li><b>Telefone:</b> {credenciado.telefone}</li>
+            <li><b>Endereço:</b> {credenciado.endereco}</li>
+            <li><b>Cidade:</b> {credenciado.cidade} / {credenciado.uf}</li><br>
+            <li><b>Serviços:</b><br>{credenciado.servicos}</li><br>
+            <li><b>Observação:</b><br>{credenciado.observacao}</li>
+            </ul>
+    """
+    )
+    pdf.set_line_width(0.5)
+    pdf.line(x1=30, y1=265, x2=180, y2=265)
+    pdf.set_y(-30)
+    pdf.set_font("helvetica", "I", 11)
+    pdf.cell(
+        0, 5, "FUNSA - GSAU-YS / Setor de Credenciamento", align="C", new_x="LMARGIN", new_y="NEXT"
+    )
+    pdf.cell(
+        0,
+        5,
+        "Telefone: (19) 3565-7367 / E-mail: credenciamento.funsa.gsauys@fab.mil.br",
+        align="C",
+    )
+    return HttpResponse(bytes(pdf.output()), content_type="application/pdf")
 
 
 @login_required  # somente usuario logado consegue executar essa função
