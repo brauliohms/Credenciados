@@ -4,7 +4,8 @@ _Sistema para cadastro dos credenciados do FUNSA-GSAU-YS_
 
 ## Instalação
 
-- Instale o **python** versão 3.x, e o **Virtualenv**
+- Instale o **python** versão 3.x, **venv** e o **pip** no seu sistema operacional
+`sudo apt install python3-full` (Debian)
 - Clone esse repositório: `git clone https://github.com/brauliohms/Credenciados.git`
 - Vá até o repositório: `cd Credenciados`
 - Crie um ambiente virtual: `python3 -m venv venv` (Debian)
@@ -31,3 +32,11 @@ _Sistema para cadastro dos credenciados do FUNSA-GSAU-YS_
 - Suba o servidor do django para Dev ou Análise: `python manage.py runserver`
 - Acesse o sistema web em um navegador através do seguinte endereço:
 `http://127.0.0.1:8000`
+
+### Testes
+
+Para realizar todos os testes:
+
+- Ter finalizado todos os passos da **Instalação**
+- Ativar o ambiente virtual caso não esteja ativado `source venv/bin/activate`
+- Rodar o comando para executar os testes `python manage.py test`
