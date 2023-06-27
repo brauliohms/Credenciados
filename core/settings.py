@@ -1,6 +1,7 @@
 import os
 from pathlib import Path
 
+from decouple import config
 from django.contrib.messages import constants
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -11,13 +12,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "django-insecure-1!()yal53=@&g=j2wfz5m7*)a7yc41u91ii#ki45zjvrvla((8"
+SECRET_KEY = config("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = config("DEBUG", cast=bool, default=False)
 
-ALLOWED_HOSTS = []
-
+ALLOWED_HOSTS = [h.strip() for h in config("ALLOWED_HOSTS", "").split(",") if h.strip()]
 
 # Application definition
 
@@ -69,11 +69,14 @@ WSGI_APPLICATION = "core.wsgi.application"
 
 DATABASES = {
     "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
+        "ENGINE": config("DB_ENGINE", "change-me"),
+        "NAME": config("POSTGRES_DB", "change-me"),
+        "USER": config("POSTGRES_USER", "change-me"),
+        "PASSWORD": config("POSTGRES_PASSWORD", "change-me"),
+        "HOST": config("POSTGRES_HOST", "change-me"),
+        "PORT": config("POSTGRES_PORT", "change-me"),
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
@@ -136,5 +139,20 @@ MESSAGE_TAGS = {
 # Redireciona para home URL após login (Padrão redireciona para /accounts/profile/)
 LOGIN_REDIRECT_URL = "/"
 
+# Config e-mail
 # Para envio do email apenas pelo terminal para Desenvolvimento
-EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
+if DEBUG:
+    EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
+
+# Para envio do email real, em produção
+if not DEBUG:
+    EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+    EMAIL_HOST = config("EMAIL_HOST")
+    EMAIL_HOST_USER = config("EMAIL_HOST_USER")
+    EMAIL_HOST_PASSWORD = config("EMAIL_HOST_PASSWORD")
+    EMAIL_PORT = 587
+    EMAIL_USE_TLS = True
+    DEFAULT_FROM_EMAIL = "noreply@fab.mil.br"
+    SITE_ID = 1
+    SITE_NAME = "Credenciados"
+    SITE_DOMAIN = "afa.intraer"
