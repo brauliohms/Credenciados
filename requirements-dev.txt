@@ -1,8 +1,5 @@
-asgiref==3.7.2
-defusedxml==0.7.1
-Django==4.2.2
-fonttools==4.40.0
-fpdf2==2.7.4
-Pillow==9.5.0
-sqlparse==0.4.4
-Unidecode==1.3.6
+Django>=4.2.2,<4.3
+fpdf2>=2.7.4,<2.8
+Pillow>=9.5.0,<9.6
+python-decouple==3.8
+Unidecode>=1.3.6,<1.4
