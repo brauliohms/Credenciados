@@ -27,17 +27,13 @@ jobs:
         pip install -r requirements.txt
     - name: Run Tests
       env:
-        SECRET_KEY: ${{ secrets.SECRET_KEY }}
-        DEBUG: ${{ secrets.DEBUG }}
-        ALLOWED_HOSTS: ${{ secrets.ALLOWED_HOSTS }}
-        DB_ENGINE: ${{ secrets.DB_ENGINE }}
-        POSTGRES_DB: ${{ secrets.POSTGRES_DB }}
-        POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
-        POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
-        POSTGRES_HOST: ${{ secrets.POSTGRES_HOST }}
-        POSTGRES_PORT: ${{ secrets.POSTGRES_PORT }}
-        EMAIL_HOST: ${{ secrets.EMAIL_HOST }}
-        EMAIL_HOST_USER: ${{ secrets.EMAIL_HOST_USER }}
-        EMAIL_HOST_PASSWORD: ${{ secrets.EMAIL_HOST_PASSWORD }}
+        SECRET_KEY: "django-insecure-1!()yal53=@&g=j2wfz5m7*)a7yc41u91ii#ki45zjvrvla((8"
+        DEBUG: "True"
+        DB_ENGINE: "django.db.backends.sqlite3"
+        POSTGRES_DB: "db.sqlite3"
+        POSTGRES_USER: "None"
+        POSTGRES_PASSWORD: "None"
+        POSTGRES_HOST: "None"
+        POSTGRES_PORT: "None"
       run: |
         python manage.py test
