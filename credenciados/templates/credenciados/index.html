@@ -5,7 +5,7 @@ Credenciados FUNSA GSAU-YS
 {% endblock %}
 
 {% block content %}
-<div class="container-fluid bg-light">
+<div class="container-fluid">
 
     <div class="container text-center">
         <!-- Mensagens importadas de outro html -->
@@ -16,22 +16,24 @@ Credenciados FUNSA GSAU-YS
         <!-- Formulários de Busca -->
         <div class="row">
                 <div class="col">
+                    <h5>Procurar pelo Nome</h5>
                     <form action="{% url 'buscar_nomes' %}" method="GET" class="row g-2 justify-content-center">
                         <div class="col-auto">
-                            <input type="text" name="q" placeholder="Digite sua busca em Nomes" class="form-control">
+                            <input type="text" name="q" placeholder="Digite o Nome" class="form-control">
                         </div>
                         <div class="col-auto">
-                            <button type="submit" class="btn btn-success mb-3">Buscar</button>
+                            <button type="submit" class="btn btn-success mb-3"><i class="fas fa-search"></i> Procurar</button>
                         </div>
                     </form>
                 </div>
                 <div class="col">
+                    <h5>Procurar pelo Procedimento</h5>
                     <form action="{% url 'buscar_servicos' %}" method="GET" class="row g-2 justify-content-center">
                         <div class="col-auto">
-                            <input type="text" name="q" placeholder="Digite sua busca em Serviços" class="form-control">
+                            <input type="text" name="q" placeholder="Digite o Serviço" class="form-control">
                         </div>
                         <div class="col-auto">
-                            <button type="submit" class="btn btn-success mb-3">Buscar</button>
+                            <button type="submit" class="btn btn-success mb-3"><i class="fas fa-search"></i> Procurar</button>
                         </div>
                     </form>
                 </div>
@@ -56,10 +58,10 @@ Credenciados FUNSA GSAU-YS
                             <td class="align-middle">{{ credenciado.cidade }}</td>
 
                             <!-- Botão IMPRIMIR -->
-                            <td class="align-middle"><a href="{% url 'pdf_credenciado' credenciado.id %}" target="_blank" rel="noopener noreferrer" class="btn btn-warning"><i class="fas fa-print"></i></a></td>
+                            <td class="align-middle"><a href="{% url 'pdf_credenciado' credenciado.id %}" target="_blank" rel="noopener noreferrer" class="btn btn-warning" title="Informações em PDF"><i class="fas fa-print"></i></a></td>
 
                             <!-- Botão Modal DETALHES -->
-                            <td class="align-middle"><button type="button" data-bs-toggle="modal" data-bs-target="#staticBackdrop-{{ credenciado.id }}" class="btn btn-primary">
+                            <td class="align-middle"><button type="button" data-bs-toggle="modal" data-bs-target="#staticBackdrop-{{ credenciado.id }}" class="btn btn-primary" title="Visualizar Informações">
                                       <i class="fas fa-info-circle fa-lg"></i></button></td>
 
                             <!-- Modal DETALHES -->
@@ -85,8 +87,8 @@ Credenciados FUNSA GSAU-YS
                                     {% if user.is_authenticated %}
                                       <a href="{% url 'edit_credenciado' credenciado.id %}" type="button" class="btn btn-info"><i class="fas fa-notes-medical"></i> Editar Credenciado</a>
                                     {% endif %}
-                                    <a href="{% url 'pdf_credenciado' credenciado.id %}" target="_blank" rel="noopener noreferrer" class="btn btn-warning"><i class="fas fa-print"></i></a>
-                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                                    <a href="{% url 'pdf_credenciado' credenciado.id %}" target="_blank" rel="noopener noreferrer" class="btn btn-warning" title="Informações em PDF"><i class="fas fa-print"></i></a>
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><i class="fas fa-window-close"></i> Fechar</button>
                                   </div>
                                 </div>
                               </div>

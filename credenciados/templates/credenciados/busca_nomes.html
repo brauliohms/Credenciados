@@ -32,10 +32,10 @@ Credenciados FUNSA GSAU-YS
                             <td class="align-middle">{{ credenciado.cidade }}</td>
 
                             <!-- Botão IMPRIMIR -->
-                            <td class="align-middle"><a href="{% url 'pdf_credenciado' credenciado.id %}" target="_blank" rel="noopener noreferrer" class="btn btn-warning"><i class="fas fa-print"></i></a></td>
+                            <td class="align-middle"><a href="{% url 'pdf_credenciado' credenciado.id %}" target="_blank" rel="noopener noreferrer" class="btn btn-warning" title="Informações em PDF"><i class="fas fa-print"></i></a></td>
 
                             <!-- Botão Modal DETALHES -->
-                            <td class="align-middle"><button type="button" data-bs-toggle="modal" data-bs-target="#staticBackdrop-{{ credenciado.id }}" class="btn btn-primary">
+                            <td class="align-middle"><button type="button" data-bs-toggle="modal" data-bs-target="#staticBackdrop-{{ credenciado.id }}" class="btn btn-primary" title="Visualizar Informações">
                                       <i class="fas fa-info-circle fa-lg"></i></button></td>
 
                             <!-- Modal DETALHES -->
@@ -61,8 +61,8 @@ Credenciados FUNSA GSAU-YS
                                     {% if user.is_authenticated %}
                                       <a href="{% url 'edit_credenciado' credenciado.id %}" type="button" class="btn btn-info"><i class="fas fa-notes-medical"></i> Editar Credenciado</a>
                                     {% endif %}
-                                    <a href="{% url 'pdf_credenciado' credenciado.id %}" target="_blank" rel="noopener noreferrer" class="btn btn-warning"><i class="fas fa-print"></i></a>
-                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                                    <a href="{% url 'pdf_credenciado' credenciado.id %}" target="_blank" rel="noopener noreferrer" class="btn btn-warning" title="Informações em PDF"><i class="fas fa-print"></i></a>
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><i class="fas fa-window-close"></i> Fechar</button>
                                   </div>
                                 </div>
                               </div>

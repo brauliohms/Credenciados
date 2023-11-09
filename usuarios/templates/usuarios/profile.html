@@ -1,61 +1,64 @@
 {% extends "base.html" %}
 {% load static %}
-
 {% block content %}
-
-<div class="container-fluid">
-
-    <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-3"></div>
-            <div class="col-6">
-            <p>{% include 'mensagens.html' %}</p>
-            <p>{% if form.errors %}
-                <div class="alert alert-danger alert-dismissible fade show container-fluid" role="alert">
-                    <div class="row align-items-center">
-                        <div class="col-11 text-start">
-                            Usuário ou senha incorretos. Tente novamente.
-                        </div>
-                        <div class="col-1 text-end">
-                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    <div class="container-fluid">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-3"></div>
+                <div class="col-6">
+                    <p>{% include 'mensagens.html' %}</p>
+                    <p>
+                        {% if form.errors %}
+                            <div class="alert alert-danger alert-dismissible fade show container-fluid"
+                                 role="alert">
+                                <div class="row align-items-center">
+                                    <div class="col-11 text-start">Usuário ou senha incorretos. Tente novamente.</div>
+                                    <div class="col-1 text-end">
+                                        <button type="button"
+                                                class="btn-close"
+                                                data-bs-dismiss="alert"
+                                                aria-label="Close"></button>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endif %}
+                    </p>
+                    <div class="card mt-5 shadow">
+                        <h5 class="card-header">
+                            <i class="fa fa-user-edit fa-fw"></i> Editar informações de {{ request.user.username }}
+                        </h5>
+                        <div class="card-body">
+                            <form method="POST" action="{% url 'edit_usuario' %}">
+                                {% csrf_token %}
+                                {% for field in form %}
+                                    <div class="row mb-3 px-3">
+                                        <label for="{{ field.id_for_label }}" class="col-sm-4 col-form-label">{{ field.label }}</label>
+                                        <div class="col-sm-6">{{ field }}</div>
+                                    </div>
+                                {% endfor %}
+                                <div class="row">
+                                    <div class="col text-start">
+                                        <button type="button"
+                                                id="id_voltar"
+                                                class="btn btn-secondary"
+                                                onclick="voltar()">
+                                            <i class="fas fa-chevron-left"></i> Voltar
+                                        </button>
+                                    </div>
+                                    <div class="col text-end">
+                                        <button type="submit" class="btn btn-success" name="salvar" id="id_salvar">
+                                            <i class="fas fa-check"></i> Salvar
+                                        </button>
+                                    </div>
+                                </div>
+                            </form>
                         </div>
                     </div>
                 </div>
-              {% endif %}</p>
-
-            <div class="card mt-5 shadow">
-                <h5 class="card-header">Editar informações de {{ request.user.username }}</h5>
-              <div class="card-body">
-
-                  <form method="POST" action="{% url 'edit_usuario' %}">
-                    {% csrf_token %}
-                    {% for field in form %}
-                        <div class="row mb-3 px-3">
-                          <label for="{{ field.id_for_label }}" class="col-sm-4 col-form-label">{{ field.label }}</label>
-                            <div class="col-sm-6">
-                                {{ field }}
-                            </div>
-                        </div>
-                    {% endfor %}
-
-                    <div class="row">
-                        <div class="col text-start">
-                            <button type="button" id="id_voltar" class="btn btn-secondary" onclick="voltar()"><i class="fas fa-chevron-left"></i> Voltar</button>
-                        </div>
-                        <div class="col text-end">
-                            <button type="submit" class="btn btn-success" name="salvar" id="id_salvar"><i class="fas fa-check"></i> Salvar</button>
-                        </div>
-                    </div>
-
-                  </form>
-              </div>
+                <div class="col-3"></div>
             </div>
-            </div>
-            <div class="col-3"></div>
-
         </div>
     </div>
-</div>
-<script src="{% static 'js/formatador.js' %}" charset="utf-8"></script>
-<script src="{% static 'js/utils.js' %}" charset="utf-8"></script>
+    <script src="{% static 'js/formatador.js' %}" charset="utf-8"></script>
+    <script src="{% static 'js/utils.js' %}" charset="utf-8"></script>
 {% endblock %}
