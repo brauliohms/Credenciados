@@ -24,7 +24,7 @@ jobs:
     - name: Install Dependencies
       run: |
         python -m pip install --upgrade pip
-        pip install -r requirements.txt
+        pip install -r ./django_credenciados/requirements.txt
     - name: Run Tests
       env:
         SECRET_KEY: "django-insecure-1!()yal53=@&g=j2wfz5m7*)a7yc41u91ii#ki45zjvrvla((8"
@@ -36,4 +36,4 @@ jobs:
         POSTGRES_HOST: "None"
         POSTGRES_PORT: "None"
       run: |
-        python manage.py test
+        python ./django_credenciados/manage.py test
