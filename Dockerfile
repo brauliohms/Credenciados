@@ -1,6 +1,6 @@
 FROM debian:bookworm-slim
 
-MAINTAINER Braulio Henrique Marques Souto <braulio@disroot.org>
+MAINTAINER Ten Souto <soutobhms@fab.mil.br>
 
 # Essa variável de ambiente é usada para controlar se o Python deve
 # gravar arquivos de bytecode (.pyc) no disco. 1 = Não, 0 = Sim
@@ -11,15 +11,23 @@ ENV PYTHONDONTWRITEBYTECODE 1
 # Em resumo, você verá os outputs do Python em tempo real.
 ENV PYTHONUNBUFFERED 1
 
+# Defina a variável de ambiente DEBIAN_FRONTEND como noninteractive
+# para evitar interações do usuário
+ENV DEBIAN_FRONTEND="noninteractive"
+
 # Entra na pasta /var/django no container
 WORKDIR /var/django
 
+COPY ./config/.bashrc /root
+COPY ./django_credenciados/requirements.txt .
+COPY ./django_credenciados/requirements-dev.txt .
+COPY ./scripts /scripts
+
 # Copia a pasta "Credenciados" para dentro do container.
-COPY . ./
-
-#ENV PATH="$VIRTUAL_ENV/bin:$PATH"
-
-#RUN pip install -r requirements.txt --break-system-packages
+# Descomente apenas se NÃO usar docker-compose ou
+# se usar docker run com -v e indicar caminho completo/idok:/var/django
+# e comentar os COPY acima
+# COPY . ./
 
 # A porta 8000 estará disponível para conexões externas ao container
 # É a porta que vamos usar para o Django.
@@ -31,7 +39,11 @@ EXPOSE 8000
 # Agrupar os comandos em um único RUN pode reduzir a quantidade de camadas da
 # imagem e torná-la mais eficiente.
 RUN apt-get update && apt-get upgrade -y && \
-    apt-get install -y netcat-openbsd python3-pip python3-venv vim && \
+    apt-get install -y tzdata locales netcat-openbsd python3-pip python3-venv vim && \
+    ln -fs /usr/share/zoneinfo/America/Sao_Paulo /etc/localtime && \
+    sed -i 's/# pt_BR.UTF-8 UTF-8/pt_BR.UTF-8 UTF-8/' /etc/locale.gen && \
+    locale-gen && \
+    update-locale LANG=pt_BR.UTF-8 && \
     python3 -m venv /venv && \
     /venv/bin/pip install --upgrade pip && \
     /venv/bin/pip install -r requirements.txt && \
@@ -42,15 +54,8 @@ RUN apt-get update && apt-get upgrade -y && \
     chown -R django:django . && \
     chmod -R 755 /var/django/static && \
     chmod -R 755 /var/django/media && \
-    chmod -R +x scripts
+    chmod -R 751 /scripts
 
-# Adiciona a pasta scripts e venv/bin
+# Adiciona a pasta /scripts e /venv/bin
 # no $PATH do container.
-ENV PATH="/var/django/scripts:/venv/bin:$PATH"
-
-# Muda o usuário para django
-USER django
-
-# Executa o arquivo scripts/commands.sh
-#CMD ["commands.sh"]
-#CMD ["/var/django/venv/bin/gunicorn", "--bind", ":8000", "--workers", "3", "core.wsgi:application"]
+ENV PATH="/scripts:/venv/bin:$PATH"
