@@ -1,7 +1,9 @@
-media/
-static/
+django_credenciados/media/
+django_credenciados/static/
 nginx/
-venv/
+django_credenciados/venv/
+django_credenciados/.env
+django_credenciados/db.sqlite3
 docker-compose.*
 Dockerfile
 env-example
@@ -45,5 +47,4 @@ docs
 env
 logs
 stats
-Dockerfile
 __localcode/
