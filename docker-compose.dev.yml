@@ -1,4 +1,4 @@
-version: '3.9'
+version: "3.9"
 
 services:
   web:
@@ -6,16 +6,15 @@ services:
     build:
       context: .
     command: gunicorn --bind 0.0.0.0:8000 core.wsgi --workers=4
+    restart: always
     volumes:
-      - ./db.sqlite3:/var/django/db.sqlite3
-      - ./core:/var/django/core
-      - ./credenciados:/var/django/credenciados
-      - ./templates:/var/django/templates
-      - ./usuarios/var/django/usuarios
+      - ./django_credenciados/:/var/django/
     expose:
       - "8000"
     env_file:
-      - ./.env-dev
+      - ./config/.env-dev
+    networks:
+      - net_dev_nginx
 
   nginx:
     container_name: nginx
@@ -23,9 +22,14 @@ services:
       context: ./nginx/
     restart: always
     volumes:
-      - ./static/:/var/django/static
-      - ./media/:/var/django/media
+      - ./django_credenciados/static/:/var/django/static
+      - ./django_credenciados/media/:/var/django/media
     ports:
       - "80:80"
     depends_on:
       - web
+    networks:
+      - net_dev_nginx
+
+networks:
+  net_dev_nginx:
