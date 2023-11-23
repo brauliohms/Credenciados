@@ -1,0 +1,54 @@
+version: "3.9"
+
+services:
+  psql:
+    container_name: psql_credenciados
+    image: postgres:15-bookworm
+    restart: always
+    volumes:
+      - /var/postgresql/data/:/var/lib/postgresql/data/
+    env_file:
+      - ./config/.env-psql
+    networks:
+      - net_psql
+
+  web:
+    container_name: django_credenciados
+    build:
+      context: .
+    command: start_django.sh
+    restart: always
+    expose:
+      - "8000"
+    volumes:
+      - ./scripts/:/scripts/
+      - ./log/django/:/var/log/gunicorn/
+      - ./django_credenciados/:/var/django/
+    env_file:
+      - ./config/.env-prod
+    depends_on:
+      - psql
+    networks:
+      - net_psql
+      - net_nginx
+
+  nginx:
+    container_name: nginx_credenciados
+    build:
+      context: ./nginx/
+    restart: always
+    volumes:
+      - ./django_credenciados/static/:/var/django/static/
+      - ./django_credenciados/media/:/var/django/media/
+      - ./nginx/conf.d/:/etc/nginx/conf.d/
+      - ./log/nginx/:/var/log/nginx/
+    ports:
+      - "80:80"
+    depends_on:
+      - web
+    networks:
+      - net_nginx
+
+networks:
+  net_nginx:
+  net_psql:
