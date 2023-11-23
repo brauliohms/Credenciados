@@ -4,6 +4,7 @@
 set -e
 
 wait_psql.sh
+pip.sh
 collectstatic.sh
 migrate.sh
 runserver.sh
